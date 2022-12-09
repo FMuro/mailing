@@ -2,14 +2,14 @@ The goal of this `python` script is to send PDF files to a list of people via li
 
 We must have the following things:
 
-- A CVS file `myconacts.csv` with two columns containing the recipients's information: **fullname;email**.
+- A CVS file `mycontacts.csv` with two columns containing the recipients's information: **fullname;email**.
 - A folder `myfolder` with all PDF files. Their names should resemble the recipient full names.
 - A site `www.baseurl.com/myspace` where the output PDF files can be uploaded.
 
 Install the requirements and run the script as follows:
 
 ```
-$ python mailing.py path/to/myconacts.csv path/to/myfolder 'www.baseurl.com/myspace'
+$ python mailing.py path/to/mycontacts.csv path/to/myfolder 'www.baseurl.com/myspace'
 ```
 
 The output is: 
@@ -26,6 +26,6 @@ You can test this script as follows. Assuming you're at this project's root:
 
 ```
 $ cd test
-$ python mailing.py myconacts.csv myfolder 'www.baseurl.com/myspace'
+$ python mailing.py mycontacts.csv myfolder 'www.baseurl.com/myspace'
 $ cat output.csv
 ```
