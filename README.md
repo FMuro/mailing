@@ -14,7 +14,7 @@ $ python mailing.py path/to/mycontacts.csv path/to/myfolder 'www.baseurl.com/mys
 
 The output is: 
 
-- A CSV file called `output.csv` which contains **link;email** (including this header line).
+- A CSV file called `myfolder_output.csv` which contains **link;email** (including this header line).
 - A folder `myfolder/normalized` containing the PDF files with normalized file names.
 
 Now, you must:
@@ -27,5 +27,5 @@ You can test this script as follows. Assuming you're at this project's root:
 ```
 $ cd test
 $ python mailing.py mycontacts.csv myfolder 'www.baseurl.com/myspace'
-$ cat output.csv
+$ cat myfolder_output.csv
 ```
