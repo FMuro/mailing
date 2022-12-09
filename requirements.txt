@@ -1,0 +1,3 @@
+thefuzz
+Unidecode
+python-Levenshtein
