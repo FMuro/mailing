@@ -24,7 +24,8 @@ with open(data, newline='') as f:
         " ", "") for datum in reader}
 
 # create output CSV with top line link;email
-output = open(os.path.basename(os.path.normpath(path))+'_output.csv', 'w')
+output = open(os.path.basename(os.path.abspath(
+    os.path.normpath(path)))+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
 writer.writerow(['link']+['email'])
 
