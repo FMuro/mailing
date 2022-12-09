@@ -21,7 +21,7 @@ files = [os.path.splitext(filename)[0] for filename in os.listdir(
 with open(data, newline='') as f:
     reader = csv.reader(f, delimiter=';')
     fullname_email = {datum[0]: datum[1].replace(
-        " ", "") for datum in reader}
+        " ", "").replace("\t", "") for datum in reader}
 
 # create output CSV with top line link;email
 output = open(os.path.basename(os.path.abspath(
