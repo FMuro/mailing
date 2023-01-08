@@ -20,7 +20,7 @@ The output is:
 Now, you must:
 
 - Upload the contents of `myfolder/normalized` to `www.baseurl.com/myspace`.
-- Merge mail `output.csv` sending each **link** to the corresponding **email**.
+- Merge mail `myfolder_output.csv` sending each **link** to the corresponding **email**.
 
 You can test this script as follows. Assuming you're at this project's root:
 
