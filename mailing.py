@@ -56,7 +56,7 @@ for file in files:
         if quality < 75:
             # query if accept anyway
             accept = input('WARNING: '+file+' matching ' +
-                           best_match+' is poor! ('+str(quality)+'% quality). Do you accept it anyway? (y/n): ')
+                           best_match+' is poor! ('+str(quality)+'% quality). Do you accept it anyway? (y/N): ')
             if accept not in ['y', 'yes', 'Y', 'Yes', 'YES']:
                 # set problems placeholder True
                 problems = True
