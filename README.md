@@ -22,6 +22,8 @@ Now, you must:
 - Upload the contents of `myfolder/normalized` to `www.baseurl.com/myspace`.
 - Merge mail `myfolder_output.csv` sending each **link** to the corresponding **email**.
 
+The option `-v` lists all file name changes for you to compare in case you detect anything wrong. It also outputs the arlgorithm's score for the output matching.
+
 You can test this script as follows. Assuming you're at this project's root:
 
 ```
