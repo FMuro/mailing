@@ -48,6 +48,7 @@ for file in files:
         print('quality percentage='+str(quality))
         print('link='+posixpath.join(baseurl, normalized_filename+'.pdf'))
         print('email='+fullname_email[best_match])
+        print('all matches='+str(process.extract(file, fullname_email.keys())))
         print('---')
     else:  # normal mode
         # create subfolder called 'normalized' if it doesn't already exist
