@@ -1,3 +1,5 @@
 thefuzz
 Unidecode
 python-Levenshtein
+numpy
+scipy
