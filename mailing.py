@@ -29,6 +29,9 @@ baseurl = args[2]
 filenames = [os.path.splitext(filename)[0] for filename in os.listdir(
     path) if filename.endswith('.pdf')]
 
+# get the names in files removing marks
+names_in_files = [ ' '.join(filename[0:-1]) for filename in filenames ]
+
 # from input CSV, dictionary fullname: email
 with open(data, newline='') as f:
     reader = csv.reader(f, delimiter=';')
@@ -41,21 +44,21 @@ fullnames = list(fullname_email_dict.keys())
 # list of answers accepted as YES
 yes_list = ['1', 'y', 'Y', 'yes', 'Yes', 'YES', 'ye', 'Ye', 'YE']
 
-# get the score matrix (filenames, fullnames)
+# get the score matrix (names_in_files, fullnames)
 rows_list = []
 columns_list = []
 scores_list = []
-for file, count in collections.Counter(filenames).items():
+for file, count in collections.Counter(names_in_files).items():
     matches = process.extract(file, fullnames)
     for match in matches:
-        rows_list.append(filenames.index(file))
+        rows_list.append(names_in_files.index(file))
         columns_list.append(fullnames.index(match[0]))
         scores_list.append(match[1])
 rows = np.array(rows_list)
 columns = np.array(columns_list)
 scores = np.array(scores_list)
 M = csr_matrix((scores, (rows, columns)), shape=(
-    len(filenames), len(fullnames))).toarray()
+    len(names_in_files), len(fullnames))).toarray()
 
 # solve the linear sum assignment problem
 [file_name_positions, full_name_positions] = optimize.linear_sum_assignment(
@@ -72,7 +75,7 @@ writer.writerow(['link']+['email'])
 os.makedirs(os.path.join(path, 'normalized'), exist_ok=True)
 
 for i in range(len(file_name_positions)):
-    # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
+    # normalize best matches of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
     normalized_fullname = unidecode(fullnames[full_name_positions[i]]).strip().replace(
         " ", "").replace(",", "").lower()
     if "-v" in opts:
