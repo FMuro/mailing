@@ -31,7 +31,7 @@ You can test this script as follows. Assuming you're at this project's root:
 $ cd test
 $ python mailing.py mycontacts.csv myfolder 'www.baseurl.com/myspace'
 $ cat myfolder_output.csv
-$ cat myfolder.log
+$ cat myfolder_mailing.log
 ```
 
 The `zsh` script `splitpdf.sh` just wraps the [`pdfcpu`](https://github.com/pdfcpu/pdfcpu) command to split a PDF file (1st argument) into a folder (2nd argument) based on the PDF's table of contents.
