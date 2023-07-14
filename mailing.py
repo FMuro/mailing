@@ -38,9 +38,6 @@ with open(data, newline='') as f:
 # create the list of fullnames
 fullnames = list(fullname_email_dict.keys())
 
-# list of answers accepted as YES
-yes_list = ['1', 'y', 'Y', 'yes', 'Yes', 'YES', 'ye', 'Ye', 'YE']
-
 # get the score matrix (filenames, fullnames)
 rows_list = []
 columns_list = []
@@ -71,21 +68,18 @@ writer.writerow(['link']+['email'])
 # create subfolder called 'normalized' if it doesn't already exist
 os.makedirs(os.path.join(path, 'normalized'), exist_ok=True)
 
+log_list = []
+
 for i in range(len(file_name_positions)):
     # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
     normalized_fullname = unidecode(fullnames[full_name_positions[i]]).strip().replace(
         " ", "").replace(",", "").lower()
-    if "-v" in opts:
-        print('---')
-        print('OLD: '+filenames[file_name_positions[i]] + '.pdf')
-        print('NEW: '+normalized_fullname+'.pdf')
+    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]])
     writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
                     [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
-    shutil.copy(os.path.join(path, filenames[file_name_positions[i]].strip()+'.pdf'), os.path.join(path, 'normalized',
+    shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(path, 'normalized',
                                                                                                    normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
-
-if "-v" in opts:
-    print('---')
-    print('')
-    print('TOTAL SCORE: '+str(total_score))
-    print('')
+sorted_log_list=sorted(log_list, key=lambda x:x[0])
+with open(os.path.basename(os.path.abspath(os.path.normpath(path)))+'.log', 'w') as log:
+    for item in sorted_log_list:
+        log.write("---\n"+"SCORE: "+str(item[0])+"\n"+"OLD: "+item[2]+".pdf\n"+"NEW: "+item[1]+".pdf\n")
