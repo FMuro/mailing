@@ -74,7 +74,7 @@ for i in range(len(file_name_positions)):
     # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
     normalized_fullname = unidecode(fullnames[full_name_positions[i]]).strip().replace(
         " ", "").replace(",", "").lower()
-    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]]) # write log info
+    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]]) # log info
     writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
                     [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
     shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(path, 'normalized',
