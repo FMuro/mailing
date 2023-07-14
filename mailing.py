@@ -80,6 +80,6 @@ for i in range(len(file_name_positions)):
     shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(path, 'normalized',
                                                                                                    normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
 sorted_log_list=sorted(log_list, key=lambda x:x[0])
-with open(os.path.basename(os.path.abspath(os.path.normpath(path)))+'.log', 'w') as log:
+with open(os.path.basename(os.path.abspath(os.path.normpath(path)))+'_mailing.log', 'w') as log:
     for item in sorted_log_list:
         log.write("---\n"+"SCORE: "+str(item[0])+"\n"+"OLD: "+item[2]+".pdf\n"+"NEW: "+item[1]+".pdf\n")
