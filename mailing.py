@@ -74,12 +74,18 @@ for i in range(len(file_name_positions)):
     # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
     normalized_fullname = unidecode(fullnames[full_name_positions[i]]).strip().replace(
         " ", "").replace(",", "").lower()
-    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]])
+    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]]) # write log info
     writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
                     [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
     shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(path, 'normalized',
                                                                                                    normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
-sorted_log_list=sorted(log_list, key=lambda x:x[0])
+
+output.close() # close csv file
+                                                                                                   
+# create log file
+sorted_log_list=sorted(log_list, key=lambda x:x[0]) # sort log in decreasing failiure likelyhood
 with open(os.path.basename(os.path.abspath(os.path.normpath(path)))+'_mailing.log', 'w') as log:
+    # write log
     for item in sorted_log_list:
         log.write("---\n"+"SCORE: "+str(item[0])+"\n"+"OLD: "+item[2]+".pdf\n"+"NEW: "+item[1]+".pdf\n")
+    log.close() # close log file
