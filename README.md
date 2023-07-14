@@ -16,7 +16,7 @@ The output is:
 
 - A CSV file called `myfolder_output.csv` which contains **link;email** (including this header line).
 - A folder `myfolder/normalized` containing the PDF files with normalized file names.
-- A text file called `myfolder.log` containing the list of file renamings with their similarity scores, in increasing order, so the possible mistakes come first.
+- A text file called `myfolder_mailing.log` containing the list of file renamings with their similarity scores, in increasing order, so the possible mistakes come first.
 
 Now, you must:
 
