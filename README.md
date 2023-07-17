@@ -35,4 +35,4 @@ $ cat myfolder_mailing.log
 $ ls myfolder_normalized
 ```
 
-The `zsh` script `splitpdf.sh` just wraps the [`pdfcpu`](https://github.com/pdfcpu/pdfcpu) command to split a PDF file (1st argument) into a folder (2nd argument) based on the PDF's table of contents.
+The `zsh` script `splitpdf.sh` just wraps the [`pdfcpu`](https://github.com/pdfcpu/pdfcpu) command to split a PDF file (1st argument) into a folder (2nd argument) based on the PDF's table of contents. You can alternatively used my pure `python` solution [PDFSplitter](https://github.com/FMuro/PDFSplitter).
