@@ -22,6 +22,10 @@ data = args[0]
 # folder with the PDF files, whose names should be more or less the previous full names
 path = args[1]
 
+# base folder name for outputs
+base_folder=os.path.basename(os.path.abspath(
+    os.path.normpath(path)))
+
 # base URL to create links
 baseurl = args[2]
 
@@ -63,13 +67,13 @@ M = csr_matrix((scores, (rows, columns)), shape=(
 total_score = M[file_name_positions, full_name_positions].sum()
 
 # create output CSV with top line link;email
-output = open(os.path.basename(os.path.abspath(
-    os.path.normpath(path)))+'_output.csv', 'w')
+output = open(base_folder+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
 writer.writerow(['link']+['email'])
 
-# create subfolder called 'normalized' if it doesn't already exist
-os.makedirs(os.path.join(path, 'normalized'), exist_ok=True)
+# create output subfolder if it doesn't already exist
+output_folder = base_folder+'_normalized'
+os.makedirs(output_folder, exist_ok=True)
 
 for i in range(len(file_name_positions)):
     # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
@@ -81,7 +85,7 @@ for i in range(len(file_name_positions)):
         print('NEW: '+normalized_fullname+'.pdf')
     writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
                     [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
-    shutil.copy(os.path.join(path, filenames[file_name_positions[i]].strip()+'.pdf'), os.path.join(path, 'normalized',
+    shutil.copy(os.path.join(path, filenames[file_name_positions[i]].strip()+'.pdf'), os.path.join(output_folder,
                                                                                                    normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
 
 if "-v" in opts:

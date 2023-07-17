@@ -15,7 +15,7 @@ $ python mailing.py path/to/mycontacts.csv path/to/myfolder 'www.baseurl.com/mys
 The output is: 
 
 - A CSV file called `myfolder_output.csv` which contains **link;email** (including this header line).
-- A folder `myfolder/normalized` containing the PDF files with normalized file names.
+- A folder `myfolder_normalized` within the current location containing the PDF files with normalized file names.
 
 Now, you must:
 
