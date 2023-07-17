@@ -16,13 +16,14 @@ The output is:
 
 - A CSV file called `myfolder_output.csv` which contains **link;email** (including this header line).
 - A folder `myfolder_normalized` within the current location containing the PDF files with normalized file names.
+- A text file called `myfolder_mailing.log` containing the list of file renamings with their similarity scores, in increasing order, so the possible mistakes come first.
 
 Now, you must:
 
 - Upload the contents of `myfolder/normalized` to `www.baseurl.com/myspace`.
 - Merge mail `myfolder_output.csv` sending each **link** to the corresponding **email**.
 
-The option `-v` lists all file name changes for you to compare in case you detect anything wrong. It also outputs the arlgorithm's score for the output matching.
+You can also check `myfolder_mailing.log` for mistakes.
 
 You can test this script as follows. Assuming you're at this project's root:
 
@@ -30,6 +31,7 @@ You can test this script as follows. Assuming you're at this project's root:
 $ cd test
 $ python mailing.py mycontacts.csv myfolder 'www.baseurl.com/myspace'
 $ cat myfolder_output.csv
+$ cat myfolder_mailing.log
 ```
 
 The `zsh` script `splitpdf.sh` just wraps the [`pdfcpu`](https://github.com/pdfcpu/pdfcpu) command to split a PDF file (1st argument) into a folder (2nd argument) based on the PDF's table of contents.
