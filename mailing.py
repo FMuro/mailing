@@ -81,7 +81,7 @@ for i in range(len(file_name_positions)):
     log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]]) # log info
     writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
                     [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
-    shutil.copy(os.path.join(path, filenames[file_name_positions[i]].strip()+'.pdf'), os.path.join(output_folder,
+    shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(output_folder,
                                                                                                    normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
 
 output.close() # close csv file
