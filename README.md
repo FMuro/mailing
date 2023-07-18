@@ -3,7 +3,7 @@ The goal of this `python` script is to send PDF files to a list of people via li
 We must have the following things:
 
 - A CSV file `mycontacts.csv` with two columns containing the recipients's information: **fullname;email**.
-- A folder `myfolder` with all PDF files. Their names should resemble the recipients's full names. Its important that words (names and surnames) are always in the same order.
+- A folder `myfolder` with all PDF files. Their names should resemble the recipients's full names. It is important that words (names and surnames) are always in the same order.
 - A site `www.baseurl.com/myspace` where the output PDF files can be uploaded.
 
 Install the requirements and run the script as follows:
