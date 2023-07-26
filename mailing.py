@@ -61,7 +61,6 @@ M = csr_matrix((scores, (rows, columns)), shape=(
 # solve the linear sum assignment problem
 [file_name_positions, full_name_positions] = optimize.linear_sum_assignment(
     M, maximize=True)
-total_score = M[file_name_positions, full_name_positions].sum()
 
 # create output CSV with top line link;email
 output = open(base_folder+'_output.csv', 'w')
