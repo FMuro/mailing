@@ -1,14 +1,8 @@
-from thefuzz import process
-from scipy import optimize
-from scipy.sparse import csr_matrix
-from unidecode import unidecode
-import numpy as np
 import os
 import sys
-import shutil
 import csv
 import posixpath
-import collections
+import libmatching.libmatching as libmatching
 
 # separate user-provided options and arguments (only expected argument "-d" for debug/test)
 opts = [opt for opt in sys.argv[1:] if opt.startswith("-")]
@@ -30,8 +24,7 @@ base_folder=os.path.basename(os.path.abspath(
 baseurl = args[2]
 
 # get the list of PDF file names in path without extensions
-filenames = [os.path.splitext(filename)[0] for filename in os.listdir(
-    path) if filename.endswith('.pdf')]
+filenames = libmatching.PDF_names(path)
 
 # from input CSV, dictionary fullname: email
 with open(data, newline='') as f:
@@ -42,53 +35,37 @@ with open(data, newline='') as f:
 # create the list of fullnames
 fullnames = list(fullname_email_dict.keys())
 
-# get the score matrix (filenames, fullnames)
-rows_list = []
-columns_list = []
-scores_list = []
-for file, count in collections.Counter(filenames).items():
-    matches = process.extract(file, fullnames)
-    for match in matches:
-        rows_list.append(filenames.index(file))
-        columns_list.append(fullnames.index(match[0]))
-        scores_list.append(match[1])
-rows = np.array(rows_list)
-columns = np.array(columns_list)
-scores = np.array(scores_list)
-M = csr_matrix((scores, (rows, columns)), shape=(
-    len(filenames), len(fullnames))).toarray()
+# get best matches list, whose elements are lists of the form [file name, full name, score]
+best_matches_list = libmatching.best_matches(filenames, fullnames)[0]
 
-# solve the linear sum assignment problem
-[file_name_positions, full_name_positions] = optimize.linear_sum_assignment(
-    M, maximize=True)
+# print log if debug mode is on ("-d" option) in decreasing failure likelihood order
+if '-d' in opts:
+    sorted_log_list = sorted(best_matches_list, key=lambda x: x[2])
+    for match in sorted_log_list:
+        print(*match, sep=' | ')
+
+# append normalized best match to elements in the previous list, which will look like [file name, full name, score, normalized full name]
+for item in best_matches_list:
+    item.append(libmatching.normalize_string(item[1]))
 
 # create output CSV with top line link;email
 output = open(base_folder+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
 writer.writerow(['link']+['email'])
+for item in best_matches_list:
+    # normalize best matches of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
+    writer.writerow([posixpath.join(baseurl, item[3]+'.pdf')] +
+                    [fullname_email_dict[item[1]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
+output.close() # close csv file
 
 # create output subfolder if it doesn't already exist
 output_folder = base_folder+'_normalized'
 os.makedirs(output_folder, exist_ok=True)
 
-log_list = []
+# reduce list to [file name, normalized full name]
+for item in best_matches_list:
+    item.pop(2)
+    item.pop(1)
 
-for i in range(len(file_name_positions)):
-    # normalize best macthes of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
-    normalized_fullname = unidecode(fullnames[full_name_positions[i]]).strip().replace(
-        " ", "").replace(",", "").lower()
-    log_list.append([M[file_name_positions[i],full_name_positions[i]],normalized_fullname,filenames[file_name_positions[i]]]) # log info
-    writer.writerow([posixpath.join(baseurl, normalized_fullname+'.pdf')] +
-                    [fullname_email_dict[fullnames[full_name_positions[i]]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
-    shutil.copy(os.path.join(path, filenames[file_name_positions[i]]+'.pdf'), os.path.join(output_folder,
-                                                                                                   normalized_fullname+'.pdf'))  # copy PDFs with normalized filenames to subfolder
-
-output.close() # close csv file
-                                                                                                   
-# create log file
-sorted_log_list=sorted(log_list, key=lambda x:x[0]) # sort log in decreasing failiure likelyhood
-with open(os.path.basename(os.path.abspath(os.path.normpath(path)))+'_mailing.log', 'w') as log:
-    # write log
-    for item in sorted_log_list:
-        log.write("---\n"+"SCORE: "+str(item[0])+"\n"+"OLD: "+item[2]+".pdf\n"+"NEW: "+item[1]+".pdf\n")
-    log.close() # close log file
+# copy renamed PDF files to output folder
+libmatching.rename_files(path, output_folder, best_matches_list)

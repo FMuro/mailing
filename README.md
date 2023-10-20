@@ -16,20 +16,19 @@ The output is:
 
 - A CSV file called `myfolder_output.csv` which contains **link;email** (including this header line).
 - A folder `myfolder_normalized` within the current location containing the PDF files with normalized file names.
-- A text file called `myfolder_mailing.log` containing the list of file renamings with their similarity scores, in increasing order, so the possible mistakes come first.
 
 Now, you must:
 
 - Upload the contents of `myfolder/normalized` to `www.baseurl.com/myspace`.
 - Merge mail `myfolder_output.csv` sending each **link** to the corresponding **email**.
 
-You can also check `myfolder_mailing.log` for mistakes.
+The option `-d` prints a list of the form `file name | macthed name | score` in decreasing failure likelihood order for you to check if there are errors.
 
 You can test this script as follows. Assuming you're at this project's root:
 
 ```
 $ cd test
-$ python3 ../mailing.py mycontacts.csv myfolder 'www.baseurl.com/myspace'
+$ python3 ../mailing.py -d mycontacts.csv myfolder 'www.baseurl.com/myspace'
 $ cat myfolder_output.csv
 $ cat myfolder_mailing.log
 $ ls myfolder_normalized
