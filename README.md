@@ -30,7 +30,6 @@ You can test this script as follows. Assuming you're at this project's root:
 $ cd test
 $ python3 ../mailing.py -d mycontacts.csv myfolder 'www.baseurl.com/myspace'
 $ cat myfolder_output.csv
-$ cat myfolder_mailing.log
 $ ls myfolder_normalized
 ```
 
