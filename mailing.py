@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import posixpath
+import uuid
 import libmatching.libmatching as libmatching
 
 # separate user-provided options and arguments (only expected argument "-d" for debug/test)
@@ -17,7 +18,7 @@ data = args[0]
 path = args[1]
 
 # base folder name for outputs
-base_folder=os.path.basename(os.path.abspath(
+base_folder = os.path.basename(os.path.abspath(
     os.path.normpath(path)))
 
 # base URL to create links
@@ -44,25 +45,24 @@ if '-d' in opts:
     for match in sorted_log_list:
         print(*match, sep=' | ')
 
-# append normalized best match to elements in the previous list, which will look like [file name, full name, score, normalized full name]
+# append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
 for item in best_matches_list:
-    item.append(libmatching.normalize_string(item[1]))
+    item.append(str(uuid.uuid4().hex))
 
 # create output CSV with top line link;email
 output = open(base_folder+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
 writer.writerow(['link']+['email'])
 for item in best_matches_list:
-    # normalize best matches of file names removing/modifying special characters from name (diacritics, spaces, capitals, etc.).
     writer.writerow([posixpath.join(baseurl, item[3]+'.pdf')] +
-                    [fullname_email_dict[item[1]]])  # the URL is the baseurl argument + normalized filename (with PDF extension)
-output.close() # close csv file
+                    [fullname_email_dict[item[1]]])  # the URL is the baseurl argument + UUID (with PDF extension)
+output.close()  # close csv file
 
 # create output subfolder if it doesn't already exist
 output_folder = base_folder+'_normalized'
 os.makedirs(output_folder, exist_ok=True)
 
-# reduce list to [file name, normalized full name]
+# reduce list to [file name, UUID]
 for item in best_matches_list:
     item.pop(2)
     item.pop(1)
