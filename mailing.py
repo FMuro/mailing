@@ -21,9 +21,6 @@ path = args[1]
 base_folder = os.path.basename(os.path.abspath(
     os.path.normpath(path)))
 
-# base URL to create links
-baseurl = args[2]
-
 # get the list of PDF file names in path without extensions
 filenames = libmatching.PDF_names(path)
 
@@ -52,10 +49,23 @@ for item in best_matches_list:
 # create output CSV with top line link;email
 output = open(base_folder+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
-writer.writerow(['link']+['email'])
+if '-l' in opts:
+    # base URL to create links
+    baseurl = args[2]
+    # CSV first row
+    writer.writerow(['link']+['email'])
+else:
+    # CSV first row
+    writer.writerow(['file']+['email'])
 for item in best_matches_list:
-    writer.writerow([posixpath.join(baseurl, item[3]+'.pdf')] +
-                    [fullname_email_dict[item[1]]])  # the URL is the baseurl argument + UUID (with PDF extension)
+    # CSV first column
+    if '-l' in opts:
+        # the URL is the baseurl argument + UUID (with PDF extension)
+        first_column = [posixpath.join(baseurl, item[3]+'.pdf')]
+    else:
+        first_column = [item[0]+'.pdf']
+    writer.writerow(first_column +
+                    [fullname_email_dict[item[1]]])
 output.close()  # close csv file
 
 # create output subfolder if it doesn't already exist
