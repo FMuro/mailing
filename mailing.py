@@ -42,14 +42,13 @@ if '-d' in opts:
     for match in sorted_log_list:
         print(*match, sep=' | ')
 
-# append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
-for item in best_matches_list:
-    item.append(str(uuid.uuid4().hex))
-
-# create output CSV with top line link;email
+# create output CSV
 output = open(base_folder+'_output.csv', 'w')
 writer = csv.writer(output, delimiter=';')
 if '-l' in opts:
+    # append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
+    for item in best_matches_list:
+        item.append(str(uuid.uuid4().hex))
     # base URL to create links
     baseurl = args[2]
     # CSV first row
@@ -68,14 +67,13 @@ for item in best_matches_list:
                     [fullname_email_dict[item[1]]])
 output.close()  # close csv file
 
-# create output subfolder if it doesn't already exist
-output_folder = base_folder+'_normalized'
-os.makedirs(output_folder, exist_ok=True)
-
-# reduce list to [file name, UUID]
-for item in best_matches_list:
-    item.pop(2)
-    item.pop(1)
-
-# copy renamed PDF files to output folder
-libmatching.rename_files(path, output_folder, best_matches_list)
+if '-l' in opts:
+    # create output subfolder if it doesn't already exist
+    output_folder = base_folder+'_normalized'
+    os.makedirs(output_folder, exist_ok=True)
+    # reduce list to [file name, UUID]
+    for item in best_matches_list:
+        item.pop(2)
+        item.pop(1)
+    # copy renamed PDF files to output folder
+    libmatching.rename_files(path, output_folder, best_matches_list)
