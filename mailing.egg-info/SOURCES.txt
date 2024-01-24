@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+mailing/__init__.py
+mailing/mailing.py
+mailing.egg-info/PKG-INFO
+mailing.egg-info/SOURCES.txt
+mailing.egg-info/dependency_links.txt
+mailing.egg-info/entry_points.txt
+mailing.egg-info/requires.txt
+mailing.egg-info/top_level.txt

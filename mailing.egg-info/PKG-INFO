@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: mailing
+Version: 0.0.1
+Summary: mail PDF files to a list of people with names resemling the file names
+Author-email: fmuro@us.es
+License: GPL-3.0
+License-File: LICENSE
+Requires-Dist: libmatching@ git+https://github.com/FMuro/libmatching.git#egg=libmatching
