@@ -31,63 +31,70 @@ def funcion():
     # folder with the PDF files, whose names should be more or less the previous full names
     path = args.folder
 
-    # base folder name for outputs
-    base_folder = os.path.basename(os.path.abspath(
-        os.path.normpath(path)))
-
-    # get the list of PDF file names in path without extensions
-    filenames = PDF_names(path)
-
-    # from input CSV, dictionary fullname: email
-    with open(data, newline='') as f:
-        reader = csv.reader(f, delimiter=';')
-        fullname_email_dict = {datum[0]: datum[1].replace(
-            " ", "").replace("\t", "") for datum in reader}
-
-    # create the list of fullnames
-    fullnames = list(fullname_email_dict.keys())
-
-    # get best matches list, whose elements are lists of the form [file name, full name, score]
-    best_matches_list = best_matches(filenames, fullnames)[0]
-
-    # print log if debug mode is on ("-d" option) in decreasing failure likelihood order
-    if args.verbose:
-        sorted_table(best_matches_list)
-
-    # create output CSV
-    output = open(base_folder+'_mailing.csv', 'w')
-    writer = csv.writer(output, delimiter=';')
-
-    # base URL to create links
-    baseurl = args.url
-    if baseurl is not None:
-        # append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
-        for item in best_matches_list:
-            item.append(str(uuid.uuid4().hex))
-
-        # CSV first row
-        writer.writerow(['link']+['email'])
+    if data is None:
+        print("Error: no input CSV file")
+    if path is None:
+        print("Error: no input folder")
+    if data is None or path is None:
+        sys.exit(1)
     else:
-        # CSV first row
-        writer.writerow(['file']+['email'])
-    for item in best_matches_list:
-        # CSV first column
-        if baseurl is not None:
-            # the URL is the baseurl argument + UUID (with PDF extension)
-            first_column = [posixpath.join(baseurl, item[3]+'.pdf')]
-        else:
-            first_column = [item[0]+'.pdf']
-        writer.writerow(first_column +
-                        [fullname_email_dict[item[1]]])
-    output.close()  # close csv file
+        # base folder name for outputs
+        base_folder = os.path.basename(os.path.abspath(
+            os.path.normpath(path)))
 
-    if baseurl is not None:
-        # create output subfolder if it doesn't already exist
-        output_folder = base_folder+'_mailing'
-        os.makedirs(output_folder, exist_ok=True)
-        # reduce list to [file name, UUID]
+        # get the list of PDF file names in path without extensions
+        filenames = PDF_names(path)
+
+        # from input CSV, dictionary fullname: email
+        with open(data, newline='') as f:
+            reader = csv.reader(f, delimiter=';')
+            fullname_email_dict = {datum[0]: datum[1].replace(
+                " ", "").replace("\t", "") for datum in reader}
+
+        # create the list of fullnames
+        fullnames = list(fullname_email_dict.keys())
+
+        # get best matches list, whose elements are lists of the form [file name, full name, score]
+        best_matches_list = best_matches(filenames, fullnames)[0]
+
+        # print log if debug mode is on ("-d" option) in decreasing failure likelihood order
+        if args.verbose:
+            sorted_table(best_matches_list)
+
+        # create output CSV
+        output = open(base_folder+'_mailing.csv', 'w')
+        writer = csv.writer(output, delimiter=';')
+
+        # base URL to create links
+        baseurl = args.url
+        if baseurl is not None:
+            # append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
+            for item in best_matches_list:
+                item.append(str(uuid.uuid4().hex))
+
+            # CSV first row
+            writer.writerow(['link']+['email'])
+        else:
+            # CSV first row
+            writer.writerow(['file']+['email'])
         for item in best_matches_list:
-            item.pop(2)
-            item.pop(1)
-        # copy renamed PDF files to output folder
-        rename_files(path, output_folder, best_matches_list)
+            # CSV first column
+            if baseurl is not None:
+                # the URL is the baseurl argument + UUID (with PDF extension)
+                first_column = [posixpath.join(baseurl, item[3]+'.pdf')]
+            else:
+                first_column = [item[0]+'.pdf']
+            writer.writerow(first_column +
+                            [fullname_email_dict[item[1]]])
+        output.close()  # close csv file
+
+        if baseurl is not None:
+            # create output subfolder if it doesn't already exist
+            output_folder = base_folder+'_mailing'
+            os.makedirs(output_folder, exist_ok=True)
+            # reduce list to [file name, UUID]
+            for item in best_matches_list:
+                item.pop(2)
+                item.pop(1)
+            # copy renamed PDF files to output folder
+            rename_files(path, output_folder, best_matches_list)
