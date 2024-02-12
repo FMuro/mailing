@@ -26,7 +26,7 @@ Use this command to update the package too.
 Run the following command:
 
 ```
-$ mailing -l path/to/mycontacts.csv -f path/to/myfolder -u 'www.baseurl.com/myspace'
+mailing -l path/to/mycontacts.csv -f path/to/myfolder -u 'www.baseurl.com/myspace'
 ```
 
 The normal output is: 
@@ -52,7 +52,7 @@ The option `-v` prints a list of the form `OLD file name | NEW file name | score
 You can get help by running:
 
 ```
-$ mailing -h
+mailing -h
 ```
 
 # Testing
@@ -60,14 +60,14 @@ $ mailing -h
 You can test this package as follows. Assuming you're at this project's root:
 
 ```
-$ cd test
-$ mailing -v -l mycontacts.csv -f myfolder
-$ cat myfolder_mailing.csv
-$ rm myfolder_mailing.csv
-$ mailing -v -l mycontacts.csv -f myfolder -u 'www.baseurl.com/myspace'
-$ cat myfolder_mailing.csv
-$ ls myfolder_mailing
-$ rm -r myfolder_mailing.csv myfolder_mailing/
+cd test
+mailing -v -l mycontacts.csv -f myfolder
+cat myfolder_mailing.csv
+rm myfolder_mailing.csv
+mailing -v -l mycontacts.csv -f myfolder -u 'www.baseurl.com/myspace'
+cat myfolder_mailing.csv
+ls myfolder_mailing
+rm -r myfolder_mailing.csv myfolder_mailing/
 
 ```
 
