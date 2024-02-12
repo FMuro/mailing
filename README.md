@@ -72,3 +72,9 @@ $ rm -r myfolder_mailing.csv myfolder_mailing/
 ```
 
 The `zsh` package `splitpdf.sh` just wraps the [`pdfcpu`](https://github.com/pdfcpu/pdfcpu) command to split a PDF file (1st argument) into a folder (2nd argument) based on the PDF's table of contents. You can alternatively used my pure `python` solution [PDFSplitter](https://github.com/FMuro/PDFSplitter).
+
+# Remove
+
+```
+pip uninstall mailing
+```
