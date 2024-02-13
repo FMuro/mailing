@@ -6,7 +6,7 @@
         {
             "label": "Build python package & reinstall",
             "type": "shell",
-            "command": "python3.11 -m build && pip uninstall -y mailing && pip install dist/*.whl"
+            "command": "rm -R dist & python3.11 -m build && pip uninstall -y mailing && pip install dist/*.whl"
         },
     ]
 }

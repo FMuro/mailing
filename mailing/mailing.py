@@ -12,9 +12,9 @@ parser = argparse.ArgumentParser(
     epilog='Enjoy your teaching admin!')
 
 parser.add_argument(
-    '-l', '--list', help='CSV file with columns fullname;email')
+    '-l', '--list', help='CSV file with columns fullname;email', required=True)
 parser.add_argument(
-    '-f', '--folder', help="folder containing the PDF files called like 'Pepe Pérez, 3,5.pdf'")
+    '-f', '--folder', help="folder containing the PDF files called like 'Pepe Pérez, 3,5.pdf'", required=True)
 parser.add_argument(
     '-u', '--url', help="base URL where the PDF files will be uploaded")
 parser.add_argument('-v', '--verbose', action='store_true',
