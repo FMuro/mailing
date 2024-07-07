@@ -19,6 +19,7 @@ parser.add_argument(
     '-u', '--url', help="base URL where the PDF files will be uploaded")
 parser.add_argument('-v', '--verbose', action='store_true',
                     help='print matching list with scores')
+parser.add_argument('-d', '--delimiter', help="CSV delimiter character (default: ,)", default=',')
 
 args = parser.parse_args()
 
@@ -47,7 +48,7 @@ def funcion():
 
         # from input CSV, dictionary fullname: email
         with open(data, newline='') as f:
-            reader = csv.reader(f, delimiter=';')
+            reader = csv.reader(f, delimiter=args.delimiter)
             fullname_email_dict = {datum[0]: datum[1].replace(
                 " ", "").replace("\t", "") for datum in reader}
 
@@ -57,13 +58,13 @@ def funcion():
         # get best matches list, whose elements are lists of the form [file name, full name, score]
         best_matches_list = best_matches(filenames, fullnames)[0]
 
-        # print log if debug mode is on ("-d" option) in decreasing failure likelihood order
+        # print log if verbose mode is on ("-v" option) in decreasing failure likelihood order
         if args.verbose:
-            sorted_table(best_matches_list)
+            sorted_table(best_matches_list, old_name="FILE name", new_name="MATCHED name")
 
         # create output CSV
         output = open(base_folder+'_mailing.csv', 'w')
-        writer = csv.writer(output, delimiter=';')
+        writer = csv.writer(output, delimiter=args.delimiter)
 
         # base URL to create links
         baseurl = args.url
@@ -87,6 +88,8 @@ def funcion():
             writer.writerow(first_column +
                             [fullname_email_dict[item[1]]])
         output.close()  # close csv file
+        # Indicate output CSV file
+        print('\nCSV file for mail merging:', output.name)
 
         if baseurl is not None:
             # create output subfolder if it doesn't already exist
@@ -98,3 +101,6 @@ def funcion():
                 item.pop(1)
             # copy renamed PDF files to output folder
             rename_files(path, output_folder, best_matches_list)
+
+            # Indicate output folder
+            print('\nrenamed PDF files copied to folder:', output_folder)
