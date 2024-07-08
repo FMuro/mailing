@@ -64,7 +64,7 @@ def funcion():
 
         # create output CSV
         output = open(base_folder+'_mailing.csv', 'w')
-        writer = csv.writer(output, delimiter=args.delimiter)
+        writer = csv.writer(output, delimiter=args.delimiter, quotechar='"', quoting=csv.QUOTE_ALL)
 
         # base URL to create links
         baseurl = args.url
