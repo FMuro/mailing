@@ -143,6 +143,10 @@ You can test this package as follows. Assuming you're at this project's root:
 cd test
 mailing -v -l mycontacts.csv -f myfolder
 cat myfolder_mailing.csv
+mailing -v -n -l mycontacts_separated.csv -f myfolder
+cat myfolder_mailing.csv
+mailing -v -n -r -l mycontacts_reversed.csv -f myfolder
+cat myfolder_mailing.csv
 rm -rf myfolder_mailing
 mailing -v -l mycontacts.csv -f myfolder -u 'www.baseurl.com/myspace'
 cat myfolder_mailing.csv
