@@ -20,6 +20,9 @@ parser.add_argument(
 parser.add_argument('-v', '--verbose', action='store_true',
                     help='print matching list with scores')
 parser.add_argument('-d', '--delimiter', help="CSV delimiter character (default: ,)", default=',')
+parser.add_argument('-c', '--column', help="CSV number of column containing emails (first column is 0, last is -1, default: -1)", default='-1', type=int)
+parser.add_argument('-r', '--reversed', help="PDF file names are FAMILY + GIVEN but first CSV columns are GIVEN, FAMILY or the other way around", action='store_true')
+parser.add_argument('-n', '--names', help="given and family names in separate CSV columns (the first two ones)", action='store_true', required='--reversed' in sys.argv)
 
 args = parser.parse_args()
 
@@ -49,7 +52,15 @@ def funcion():
         # from input CSV, dictionary fullname: email
         with open(data, newline='') as f:
             reader = csv.reader(f, delimiter=args.delimiter)
-            fullname_email_dict = {datum[0]: datum[1].replace(
+            if args.names: # if names are in separate columns
+                if args.reversed:
+                    fullname_email_dict = {datum[1] + " " + datum[0]: datum[args.column].replace(
+                    " ", "").replace("\t", "") for datum in reader}
+                else:
+                    fullname_email_dict = {datum[0] + " " + datum[1]: datum[args.column].replace(
+                    " ", "").replace("\t", "") for datum in reader}
+            else:
+                fullname_email_dict = {datum[0]: datum[args.column].replace(
                 " ", "").replace("\t", "") for datum in reader}
 
         # create the list of fullnames
