@@ -1,1 +1,1 @@
-libmatching@ git+https://github.com/FMuro/libmatching.git#egg=libmatching
+matching@ git+https://github.com/FMuro/matching.git#egg=matching

@@ -6,7 +6,7 @@
         {
             "label": "Build python package & reinstall",
             "type": "shell",
-            "command": "rm -R dist & python -m build && pipx uninstall  mailing && pipx install dist/*.whl"
+            "command": "rm -rf dist ; python -m build pip install build; python -m build && pipx uninstall mailing ; pipx install dist/*.whl"
         },
     ]
 }

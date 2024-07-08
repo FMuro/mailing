@@ -4,7 +4,7 @@ pyproject.toml
 setup.cfg
 setup.py
 mailing/__init__.py
-mailing/mailing.py
+mailing/action.py
 mailing.egg-info/PKG-INFO
 mailing.egg-info/SOURCES.txt
 mailing.egg-info/dependency_links.txt

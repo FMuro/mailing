@@ -5,4 +5,4 @@ Summary: mail PDF files to a list of people with names resemling the file names
 Author-email: fmuro@us.es
 License: GPL-3.0
 License-File: LICENSE
-Requires-Dist: libmatching@ git+https://github.com/FMuro/libmatching.git#egg=libmatching
+Requires-Dist: matching@ git+https://github.com/FMuro/matching.git#egg=matching

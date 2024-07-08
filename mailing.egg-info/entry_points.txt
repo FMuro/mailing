@@ -1,2 +1,2 @@
 [console_scripts]
-mailing = mailing.mailing:funcion
+mailing = mailing.action:funcion
