@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: mailing
-Version: 0.0.4
+Version: 0.0.5
 Summary: mail PDF files to a list of people with names resemling the file names
 Author-email: fmuro@us.es
 License: GPL-3.0

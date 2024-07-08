@@ -23,7 +23,7 @@ parser.add_argument('-d', '--delimiter', help="CSV delimiter character (default:
 parser.add_argument('-c', '--column', help="CSV number of column containing emails (first column is 0, last is -1, default: -1)", default='-1', type=int)
 parser.add_argument('-r', '--reversed', help="PDF file names are FAMILY + GIVEN but first CSV columns are GIVEN, FAMILY or the other way around", action='store_true')
 parser.add_argument('-n', '--names', help="given and family names in separate CSV columns (the first two ones)", action='store_true', required='--reversed' in sys.argv)
-parser.add_argument('-t', '--threshold', help="minimum score to take matching into account (default: 0)", action='store_true', default='0', type=int)
+parser.add_argument('-t', '--threshold', help="minimum score to take matching into account (default: 0)", default='0', type=int)
 
 args = parser.parse_args()
 
