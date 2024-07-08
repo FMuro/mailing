@@ -3,7 +3,7 @@ import sys
 import csv
 import posixpath
 import uuid
-from libmatching.libmatching import PDF_names, best_matches, rename_files, sorted_table
+from matching import PDF_names, best_matches, rename_files, sorted_table
 import argparse
 
 parser = argparse.ArgumentParser(
