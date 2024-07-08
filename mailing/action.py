@@ -23,6 +23,7 @@ parser.add_argument('-d', '--delimiter', help="CSV delimiter character (default:
 parser.add_argument('-c', '--column', help="CSV number of column containing emails (first column is 0, last is -1, default: -1)", default='-1', type=int)
 parser.add_argument('-r', '--reversed', help="PDF file names are FAMILY + GIVEN but first CSV columns are GIVEN, FAMILY or the other way around", action='store_true')
 parser.add_argument('-n', '--names', help="given and family names in separate CSV columns (the first two ones)", action='store_true', required='--reversed' in sys.argv)
+parser.add_argument('-t', '--threshold', help="minimum score to take matching into account (default: 0)", action='store_true', default='0', type=int)
 
 args = parser.parse_args()
 
@@ -82,7 +83,8 @@ def funcion():
         if baseurl is not None:
             # append UUID to elements in the previous list, which will look like [file name, full name, score, UUID]
             for item in best_matches_list:
-                item.append(str(uuid.uuid4().hex))
+                if item[2] >= args.threshold: # only if score is above threshold
+                    item.append(str(uuid.uuid4().hex))
 
             # CSV first row
             writer.writerow(['link']+['email'])
@@ -90,14 +92,15 @@ def funcion():
             # CSV first row
             writer.writerow(['file']+['email'])
         for item in best_matches_list:
-            # CSV first column
-            if baseurl is not None:
-                # the URL is the baseurl argument + UUID (with PDF extension)
-                first_column = [posixpath.join(baseurl, item[3]+'.pdf')]
-            else:
-                first_column = [item[0]+'.pdf']
-            writer.writerow(first_column +
-                            [fullname_email_dict[item[1]]])
+            if item[2] >= args.threshold: # only if score is above threshold
+                # CSV first column
+                if baseurl is not None:
+                    # the URL is the baseurl argument + UUID (with PDF extension)
+                    first_column = [posixpath.join(baseurl, item[3]+'.pdf')]
+                else:
+                    first_column = [item[0]+'.pdf']
+                writer.writerow(first_column +
+                                [fullname_email_dict[item[1]]])
         output.close()  # close csv file
         # Indicate output CSV file
         print('\nCSV file for mail merging:', output.name)

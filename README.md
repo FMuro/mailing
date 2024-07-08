@@ -135,6 +135,8 @@ Ramírez Péres,Santiago,
 
 `--reversed` if `--names` is passed and file names look like `Ramírez Péres, Santiago, 3,5.pdf` while CSV colums look like `GIVEN name,FAMILY name,email`, or the other way around, i.e. file names look like `Santiago Ramírez Péres, 3,5.pdf` and CSV colums look like `FAMILY name,GIVEN name,email`
 
+`--threshold` minimum score to take matching into account. **Default is 0**.
+
 # Testing
 
 You can test this package as follows. Assuming you're at this project's root:
