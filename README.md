@@ -77,7 +77,7 @@ mailing -l path/to/mycontacts.csv -f path/to/myfolder -u 'www.baseurl.com/myspac
 The output is:
 
 - A CSV file `myfolder_mailing.csv` which looks like:
-- 
+  
 | file                                                         | email                     |
 | ------------------------------------------------------------ | ------------------------- |
 | www.baseurl.com/myspace/d66cd867db5a4953b7a7763667f1dc90.pdf | sramirezperez@example.com |
