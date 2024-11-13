@@ -32,6 +32,17 @@ pip install --upgrade git+https://github.com/FMuro/mailing.git#egg=mailing
 ```
 
 Use this command to update the package too. 
+Do you use `pipx`? This is typical if you have `python` installed on macOS through `homebrew`. Then the command to install is:
+
+```
+pipx install git+https://github.com/FMuro/mailing.git#egg=mailing
+```
+
+The command to update is:
+
+```
+pipx upgrade mailing
+```
 
 # How to use (send files)
 
@@ -163,4 +174,10 @@ If your files are called like `Pérez, Pepe, .pdf` and your CSV file has a singl
 
 ```
 pip uninstall mailing
+```
+
+If you installed it using `pipx`:
+
+```
+pipx uninstall mailing
 ```
